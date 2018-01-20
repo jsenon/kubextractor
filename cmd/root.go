@@ -54,6 +54,17 @@ var rootCmd = &cobra.Command{
 				  Complete documentation is available at https://github.com/jsenon/kubextractor
 				  Use kubectl config view -o json --raw --kubeconfig YOURCONFIG > output.json to generate json
 				  After export Use kubectl config use-context YOURCONTEXT --kubeconfig output.json to use it`,
+	Args: cobra.MinimumNArgs(1),
+	// Args: func(cmd *cobra.Command, args []string) error {
+	// 	if len(args) < 1 {
+	// 		return errors.New("requires at least one arg")
+	// 	}
+	// 	if rootCmd(args[0]) {
+	// 		return nil
+	// 	}
+	// 	return fmt.Errorf("invalid context: %s", args[0])
+	// },
+
 	Run: func(cmd *cobra.Command, args []string) {
 
 		defaultfilejson := "/.kube/config.json"
@@ -91,7 +102,7 @@ var rootCmd = &cobra.Command{
 			cmdArgs := []string{"config", "view", "-o", "json", "--raw", "--kubeconfig", cfgFile}
 
 			cfgFile = usr.HomeDir + defaultfile
-			fmt.Println("cfgFile", cfgFile)
+			// fmt.Println("cfgFile", cfgFile)
 			out, _ := exec.Command(cmdName, cmdArgs...).Output()
 
 			err = ioutil.WriteFile(tempfile, out, 0644)
@@ -103,18 +114,14 @@ var rootCmd = &cobra.Command{
 
 		}
 
-		// 	out, _ := exec.Command("kubectl", "config", "view", "-o json", "--raw").Output()
-		// 	fmt.Println("Cmd", out)
-		// }
-
-		// Used defualt value for json config file
+		// Used default value for json config file
 		// Exit if doesn't exist
 		if jsonfile == "" {
 			jsonfile = usr.HomeDir + defaultfilejson
 
 		}
 
-		fmt.Println("jsonfile", jsonfile)
+		// fmt.Println("jsonfile", jsonfile)
 		file, err := os.Open(jsonfile)
 		if err != nil {
 			log.Fatal(err)
@@ -206,9 +213,9 @@ func Execute() {
 func init() {
 
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "k8s config file default ($HOME/.kube/config)")
-	rootCmd.PersistentFlags().StringVarP(&jsonfile, "configjson", "j", "", "k8s config file JSON ($HOME/.kube/config.json)")
+	rootCmd.PersistentFlags().StringVarP(&jsonfile, "configjson", "j", "", "k8s config file JSON default ($HOME/.kube/config.json)")
 
-	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "Name of  context to extract")
+	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "MANDATORY: Name of  context to extract")
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "Name of output file")
 
 	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
