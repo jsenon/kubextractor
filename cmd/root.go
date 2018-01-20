@@ -66,7 +66,8 @@ var rootCmd = &cobra.Command{
 
 		res := &Config{}
 		json.Unmarshal([]byte(string(b)), &res)
-		fmt.Println(res)
+		// fmt.Println(res)
+		fmt.Println("Context Asked:", context)
 
 	},
 }
