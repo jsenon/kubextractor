@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Config Struct of JSON Kubernetes Config File
 type Config struct {
 	Kind        string `json:"kind"`
 	APIVersion  string `json:"apiVersion"`
@@ -203,6 +204,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute Viper Command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
