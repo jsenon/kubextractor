@@ -24,8 +24,10 @@ var rootCmd = &cobra.Command{
 	Long: `Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor`,
 	Run: func(cmd *cobra.Command, args []string) {
+		jsonfile = "/Users/julien/.kube/config.json"
 		// Do Stuff Here
-		content, err := ioutil.ReadFile(cfgFile)
+		fmt.Println("JSON:", jsonfile)
+		content, err := ioutil.ReadFile(jsonfile)
 		if err != nil {
 			fmt.Print("Error:", err)
 		}
@@ -56,9 +58,8 @@ func init() {
 	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
 	viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	viper.SetDefault("jsonfile", "$HOME/.kube/config")
+
 }
 
 // initConfig reads in config file and ENV variables if set.
