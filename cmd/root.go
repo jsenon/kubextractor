@@ -1,18 +1,44 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
-
-	homedir "github.com/mitchellh/go-homedir"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-// type Config struct {
-// }
+type Config struct {
+	Kind        string `json:"kind"`
+	APIVersion  string `json:"apiVersion"`
+	Preferences struct {
+	} `json:"preferences"`
+	Clusters []struct {
+		Name    string `json:"name"`
+		Cluster struct {
+			Server                string `json:"server"`
+			InsecureSkipTLSVerify bool   `json:"insecure-skip-tls-verify"`
+		} `json:"cluster"`
+	} `json:"clusters"`
+	Users []struct {
+		Name string `json:"name"`
+		User struct {
+			ClientCertificateData string `json:"client-certificate-data"`
+			ClientKeyData         string `json:"client-key-data"`
+		} `json:"user"`
+	} `json:"users"`
+	Contexts []struct {
+		Name    string `json:"name"`
+		Context struct {
+			Cluster string `json:"cluster"`
+			User    string `json:"user"`
+		} `json:"context"`
+	} `json:"contexts"`
+	CurrentContext string `json:"current-context"`
+}
 
 var jsonfile string
 var context string
@@ -24,19 +50,24 @@ var rootCmd = &cobra.Command{
 	Long: `Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor`,
 	Run: func(cmd *cobra.Command, args []string) {
-		jsonfile = "/Users/julien/.kube/config.json"
+		// jsonfile = "/Users/julien/.kube/config.json"
 		// Do Stuff Here
 		fmt.Println("JSON:", jsonfile)
-		content, err := ioutil.ReadFile(jsonfile)
+		file, err := os.Open(jsonfile)
 		if err != nil {
-			fmt.Print("Error:", err)
+			log.Fatal(err)
 		}
-		// var conf Config
-		// err = json.Unmarshal(content, &conf)
-		// if err != nil {
-		// 	fmt.Print("Error:", err)
-		// }
-		fmt.Println(content)
+		defer file.Close()
+
+		b, err := ioutil.ReadAll(file)
+
+		// str := string(b)
+		// fmt.Println(str)
+
+		res := &Config{}
+		json.Unmarshal([]byte(string(b)), &res)
+		fmt.Println(res)
+
 	},
 }
 
@@ -48,42 +79,11 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mytest.yaml)")
-
-	rootCmd.PersistentFlags().StringVarP(&jsonfile, "jsonfile", "c", "", "config file (default is $HOME/.kube/config")
+	rootCmd.PersistentFlags().StringVarP(&jsonfile, "config", "c", "/Users/julien/.kube/config.json", "k8s config file ")
 	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "Name of  context to extract")
 
 	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
 	viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
 
-	viper.SetDefault("jsonfile", "$HOME/.kube/config")
-
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".mytest" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".mytest")
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
