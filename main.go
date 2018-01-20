@@ -11,23 +11,9 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"kubextractor/cmd"
 )
 
-type Config struct {
-}
-
 func main() {
-	content, err := ioutil.ReadFile("config.json")
-	if err != nil {
-		fmt.Print("Error:", err)
-	}
-	var conf Config
-	err = json.Unmarshal(content, &conf)
-	if err != nil {
-		fmt.Print("Error:", err)
-	}
-	fmt.Println(conf)
+	cmd.Execute()
 }
