@@ -21,8 +21,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "kubextractor",
 	Short: "Extract k8s context from global config file",
-	Long: `Extract kubernetes context ie. configuration
-				  user and endpoint.
+	Long: `Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
@@ -49,23 +48,17 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mytest.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mytest.yaml)")
 
-	rootCmd.PersistentFlags().StringVarP(&jsonfile, "config", "c", "", "config file (default is $HOME/.kube/config")
-	rootCmd.PersistentFlags().StringP("author", "a", "SENON Julien", "Author name for copyright attribution")
-	rootCmd.PersistentFlags().StringP("userLicense", "l", "Apache", "Name of license for the project (can provide `licensetext` in config)")
-	rootCmd.PersistentFlags().StringVarP(&context, "c", "", "Default", "Name of  context to extract")
+	rootCmd.PersistentFlags().StringVarP(&jsonfile, "jsonfile", "c", "", "config file (default is $HOME/.kube/config")
+	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "Name of  context to extract")
 
 	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
-	viper.BindPFlag("userLicense", rootCmd.PersistentFlags().Lookup("userLicense"))
-	viper.BindPFlag("author", rootCmd.PersistentFlags().Lookup("author"))
 	viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
 
-	viper.SetDefault("author", "SENON Julien julien.senon@gmail.com")
-	viper.SetDefault("userLicense", "apache")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
