@@ -21,7 +21,6 @@ Download kubextractor executable file in bin/
 ```
 Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor
-				  Use kubectl config view -o json --raw --kubeconfig YOURCONFIG > output.json to generate json
 				  After export Use kubectl config use-context YOURCONTEXT --kubeconfig output.json to use it
 
 Usage:

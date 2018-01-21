@@ -53,18 +53,8 @@ var rootCmd = &cobra.Command{
 	Short: "Extract k8s context from global config file",
 	Long: `Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor
-				  Use kubectl config view -o json --raw --kubeconfig YOURCONFIG > output.json to generate json
 				  After export Use kubectl config use-context YOURCONTEXT --kubeconfig output.json to use it`,
 	Args: cobra.MinimumNArgs(1),
-	// Args: func(cmd *cobra.Command, args []string) error {
-	// 	if len(args) < 1 {
-	// 		return errors.New("requires at least one arg")
-	// 	}
-	// 	if rootCmd(args[0]) {
-	// 		return nil
-	// 	}
-	// 	return fmt.Errorf("invalid context: %s", args[0])
-	// },
 
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -93,8 +83,6 @@ var rootCmd = &cobra.Command{
 			}
 
 			jsonfile = tempfile
-
-			// out, _ := exec.Command("kubectl", "config", "view", "-o json", "--raw").Output()
 		}
 
 		// If value for config k8s but no json we need to generate a json output
@@ -103,7 +91,6 @@ var rootCmd = &cobra.Command{
 			cmdArgs := []string{"config", "view", "-o", "json", "--raw", "--kubeconfig", cfgFile}
 
 			cfgFile = usr.HomeDir + defaultfile
-			// fmt.Println("cfgFile", cfgFile)
 			out, _ := exec.Command(cmdName, cmdArgs...).Output()
 
 			err = ioutil.WriteFile(tempfile, out, 0644)
@@ -122,7 +109,6 @@ var rootCmd = &cobra.Command{
 
 		}
 
-		// fmt.Println("jsonfile", jsonfile)
 		file, err := os.Open(jsonfile)
 		if err != nil {
 			log.Fatal(err)
@@ -131,16 +117,10 @@ var rootCmd = &cobra.Command{
 
 		b, err := ioutil.ReadAll(file)
 
-		// str := string(b)
-		// fmt.Println(str)
-
 		res := &Config{}
 		var configoutput Config
 
 		json.Unmarshal([]byte(string(b)), &res)
-		// fmt.Println(res)
-		// fmt.Println("Context Asked:", context)
-		// fmt.Println("Debug", res.Clusters)
 
 		configoutput.APIVersion = res.APIVersion
 		configoutput.Kind = res.Kind
@@ -149,8 +129,6 @@ var rootCmd = &cobra.Command{
 		for _, coutput := range res.Clusters {
 
 			if coutput.Name == context {
-				// fmt.Println("Matching", i)
-				// fmt.Println("Output", coutput)
 				configoutput.Clusters = append(configoutput.Clusters, coutput)
 
 			}
@@ -161,9 +139,7 @@ var rootCmd = &cobra.Command{
 		for _, coutput := range res.Users {
 
 			if coutput.Name == context {
-				// fmt.Println("Matching", i)
 				configoutput.Users = append(configoutput.Users, coutput)
-
 			}
 
 		}
@@ -172,9 +148,7 @@ var rootCmd = &cobra.Command{
 		for _, coutput := range res.Contexts {
 
 			if coutput.Name == context {
-				// fmt.Println("Matching", i)
 				configoutput.Contexts = append(configoutput.Contexts, coutput)
-
 			}
 
 		}
@@ -212,6 +186,7 @@ func Execute() {
 	}
 }
 
+// Func to init Cobra Flag and bind flag
 func init() {
 
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "k8s config file default ($HOME/.kube/config)")
