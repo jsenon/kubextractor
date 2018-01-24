@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/jsenon/kubextractor](https://goreportcard.com/report/github.com/jsenon/kubextractor)
+
+
 # KubExtract
 
 This tool could be used to extract specific k8s configuration context from global config file
