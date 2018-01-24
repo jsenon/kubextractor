@@ -11,6 +11,12 @@ This tool could be used to extract specific k8s configuration context from globa
 go build kubextractor
 ```
 
+### Use package
+
+```
+go get -u github.com/jsenon/kubextractor
+```
+
 ### Prerequisite
 
 You need to have kubectl command line properly installed and set to your PATH
