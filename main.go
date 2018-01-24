@@ -11,7 +11,7 @@
 package main
 
 import (
-	"github.com/kubextractor/cmd"
+	"github.com/jsenon/kubextractor/cmd"
 )
 
 func main() {
