@@ -1,5 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jsenon/kubextractor)](https://goreportcard.com/report/github.com/jsenon/kubextractor)
-[![CircleCI](https://circleci.com/gh/jsenon/kubextractor.svg?style=svg&circle-token=a8df7aa6e5450279a39e313b309dfd869472c9a5)]
+
+[![CircleCI](https://circleci.com/gh/jsenon/kubextractor.svg?style=svg&circle-token=a8df7aa6e5450279a39e313b309dfd869472c9a5)](https://circleci.com/gh/jsenon/kubextractor)
 
 # KubExtract
 
