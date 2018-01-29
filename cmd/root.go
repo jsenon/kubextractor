@@ -54,7 +54,7 @@ var rootCmd = &cobra.Command{
 	Long: `Extract kubernetes context ie. configuration user and endpoint.
 				  Complete documentation is available at https://github.com/jsenon/kubextractor
 				  After export Use kubectl config use-context YOURCONTEXT --kubeconfig output.json to use it`,
-	Args: cobra.MinimumNArgs(1),
+	// Args: cobra.MinimumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -195,8 +195,11 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "MANDATORY: Name of  context to extract")
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "Name of output file")
 
+	rootCmd.MarkPersistentFlagRequired("context")
+
 	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
 	viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
 	viper.BindPFlag("output", rootCmd.PersistentFlags().Lookup("output"))
+	viper.BindPFlag("cfgFile", rootCmd.PersistentFlags().Lookup("cfgFile"))
 
 }
