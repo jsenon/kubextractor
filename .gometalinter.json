@@ -1,9 +1,7 @@
 {
     "Enable": [
-      "go vet",
-      "go tool vet --shadow ",
+      "vet",
       "gotype",
-      "gotype -x",
       "deadcode",
       "gocyclo",
       "golint",
@@ -18,8 +16,7 @@
       "unconvert",
       "goconst",
       "gas",
-      "goimport",
-      "lll",
+      "goimports",
       "misspell"
     ]
   }

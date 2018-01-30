@@ -94,7 +94,7 @@ var rootCmd = &cobra.Command{
 			cmdArgs := []string{"config", "view", "-o", "json", "--raw", "--kubeconfig", cfgFile}
 
 			cfgFile = usr.HomeDir + defaultfile
-			out, erro := exec.Command(cmdName, cmdArgs...).Output() // #nosec
+			out, erro := exec.Command(cmdName, cmdArgs...).Output() // #nosecx
 			if erro != nil {
 				log.Fatal(erro)
 			}
@@ -235,5 +235,4 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
