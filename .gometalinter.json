@@ -1,0 +1,25 @@
+{
+    "Enable": [
+      "go vet",
+      "go tool vet --shadow ",
+      "gotype",
+      "gotype -x",
+      "deadcode",
+      "gocyclo",
+      "golint",
+      "varcheck",
+      "structcheck",
+      "maligned",
+      "errcheck",
+      "megacheck",
+      "dupl",
+      "ineffassign",
+      "interfacer",
+      "unconvert",
+      "goconst",
+      "gas",
+      "goimport",
+      "lll",
+      "misspell"
+    ]
+  }
