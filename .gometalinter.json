@@ -1,6 +1,7 @@
 {
     "Enable": [
       "vet",
+      "lll",
       "gotype",
       "deadcode",
       "gocyclo",
@@ -18,5 +19,6 @@
       "gas",
       "goimports",
       "misspell"
-    ]
+    ],
+    "LineLength": 120
   }
