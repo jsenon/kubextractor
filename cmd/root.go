@@ -75,7 +75,10 @@ var rootCmd = &cobra.Command{
 		if cfgFile == "" && jsonfile == "" {
 
 			cfgFile = usr.HomeDir + defaultfile
-			out, _ := exec.Command(cmdName, cmdArgs...).Output()
+			out, erro := exec.Command(cmdName, cmdArgs...).Output() // #nosec
+			if erro != nil {
+				log.Fatal(erro)
+			}
 
 			err = ioutil.WriteFile(tempfile, out, 0644)
 			if err != nil {
@@ -91,7 +94,10 @@ var rootCmd = &cobra.Command{
 			cmdArgs := []string{"config", "view", "-o", "json", "--raw", "--kubeconfig", cfgFile}
 
 			cfgFile = usr.HomeDir + defaultfile
-			out, _ := exec.Command(cmdName, cmdArgs...).Output()
+			out, erro := exec.Command(cmdName, cmdArgs...).Output() // #nosec
+			if erro != nil {
+				log.Fatal(erro)
+			}
 
 			err = ioutil.WriteFile(tempfile, out, 0644)
 			if err != nil {
@@ -113,14 +119,21 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer file.Close()
+
+		defer file.Close() // nolint: errcheck
 
 		b, err := ioutil.ReadAll(file)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		res := &Config{}
 		var configoutput Config
 
-		json.Unmarshal([]byte(string(b)), &res)
+		err = json.Unmarshal([]byte(string(b)), &res)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		configoutput.APIVersion = res.APIVersion
 		configoutput.Kind = res.Kind
@@ -155,12 +168,18 @@ var rootCmd = &cobra.Command{
 
 		// Output to console
 		if output == "" {
-			body, _ := json.MarshalIndent(configoutput, "", "   ")
+			body, erro := json.MarshalIndent(configoutput, "", "   ")
+			if erro != nil {
+				log.Fatal(erro)
+			}
 			fmt.Println(string(body))
 		} else {
 
 			//Write to output file specified in args
-			body, _ := json.MarshalIndent(configoutput, "", "   ")
+			body, erro := json.MarshalIndent(configoutput, "", "   ")
+			if erro != nil {
+				log.Fatal(erro)
+			}
 
 			err = ioutil.WriteFile(output, body, 0644)
 			if err != nil {
@@ -195,11 +214,26 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&context, "context", "e", "", "MANDATORY: Name of  context to extract")
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "", "Name of output file")
 
-	rootCmd.MarkPersistentFlagRequired("context")
+	err := rootCmd.MarkPersistentFlagRequired("context")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
-	viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
-	viper.BindPFlag("output", rootCmd.PersistentFlags().Lookup("output"))
-	viper.BindPFlag("cfgFile", rootCmd.PersistentFlags().Lookup("cfgFile"))
+	err = viper.BindPFlag("jsonfile", rootCmd.PersistentFlags().Lookup("jsonfile"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = viper.BindPFlag("context", rootCmd.PersistentFlags().Lookup("context"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = viper.BindPFlag("output", rootCmd.PersistentFlags().Lookup("output"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = viper.BindPFlag("cfgFile", rootCmd.PersistentFlags().Lookup("cfgFile"))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
