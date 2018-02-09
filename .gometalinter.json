@@ -20,5 +20,5 @@
       "goimports",
       "misspell"
     ],
-    "LineLength": 120
+    "LineLength": 220
   }
