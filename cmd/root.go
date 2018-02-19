@@ -31,6 +31,8 @@ type Config struct {
 		User struct {
 			ClientCertificateData string `json:"client-certificate-data"`
 			ClientKeyData         string `json:"client-key-data"`
+			UserName              string `json:"username"`
+			Password              string `json:"password"`
 		} `json:"user"`
 	} `json:"users"`
 	Contexts []struct {
