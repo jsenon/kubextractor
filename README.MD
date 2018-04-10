@@ -52,3 +52,7 @@ Use Help if need
 kubextractor -h
 ```
 
+### Todo
+
+As seen by @VixsTy refactor and use https://github.com/kubernetes/client-go/blob/master/tools/clientcmd/api/types.go
+
