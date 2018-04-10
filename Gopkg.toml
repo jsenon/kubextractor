@@ -41,3 +41,7 @@
   go-tests = true
   unused-packages = true
   non-go = true
+
+[[override]]
+  branch = "master"
+  name = "github.com/spf13/pflag"
