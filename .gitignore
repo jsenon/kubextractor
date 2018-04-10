@@ -1,5 +1,8 @@
 .idea
 
+kubextractor
+vendor/
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
