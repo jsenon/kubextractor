@@ -34,10 +34,9 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "kubextractor",
-	Short: "Extract k8s context from global config file",
-	Long: `Extract kubernetes context ie. configuration user and endpoint.
-Complete documentation is available at https://github.com/jsenon/kubextractor
-After export Use kubectl config use-context YOURCONTEXT --kubeconfig output.json to use it`,
+	Short: "Extract/Inject k8s context from global config file",
+	Long: `Extract/Inject kubernetes context ie. configuration user and endpoint.
+Complete documentation is available at https://github.com/jsenon/kubextractor`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
